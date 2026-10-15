@@ -2,7 +2,16 @@
 
 **Om** — оболочка в духе [Omarchy](https://omarchy.org) для любого дистрибутива Linux: Hyprland, waybar, foot, tmux, единая тема Tokyo Night и встроенная работа с ИИ-агентами. Ставится поверх существующей системы, не заменяя её.
 
-> English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested. For AI agents: see [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md).
+> English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
+
+> [!IMPORTANT]
+> **🤖 For AI agents (Hermes, Claude Code, Codex, OpenCode, …)**
+>
+> If a user asked you to install, update, customize or debug Om, **read [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md) first**: ground rules, step-by-step install with checks, debugging, update and uninstall.
+> Skills for ongoing work: [skills/om-hyprland](skills/om-hyprland/SKILL.md) (customization) and [skills/om-diagnose-crash](skills/om-diagnose-crash/SKILL.md) (crashes).
+> Always start with `./install.sh --dry-run` and ask the user before any `sudo` step.
+>
+> **Для ИИ-агентов:** инструкция по установке — [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md), скиллы — в папке [skills/](skills/).
 
 ## Что это и зачем
 
