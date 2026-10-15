@@ -2,6 +2,10 @@
 
 **Om** — оболочка в духе [Omarchy](https://omarchy.org) для любого дистрибутива Linux: Hyprland, waybar, foot, tmux, единая тема Tokyo Night и встроенная работа с ИИ-агентами. Ставится поверх существующей системы, не заменяя её.
 
+![Рабочий стол Om: waybar, tmux с git, mc в Tokyo Night и шпаргалка горячих клавиш (Super+K)](docs/img/desktop.png)
+
+*Рабочий стол Om: сверху waybar; слева tmux, справа Midnight Commander в Tokyo Night; поверх — шпаргалка горячих клавиш (Super+K).*
+
 > English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
 
 > [!IMPORTANT]
@@ -26,8 +30,6 @@ Omarchy от DHH — красивый и удобный десктоп, но э�
 
 **Рабочий стол (Hyprland ≥ 0.55, Lua-конфиг)**
 - Управление с клавиатуры, у каждой горячей клавиши есть описание. **Super+K** открывает шпаргалку по всем клавишам, в терминале то же самое даёт команда `hk`. Полный список: [docs/keybindings.md](docs/keybindings.md).
-
-  <img src="docs/img/keybinds.png" alt="Шпаргалка горячих клавиш Om (Super+K)" width="640">
 - **Перейти или запустить** (Super+Shift+B/T/O/E): если окно браузера, Telegram, Obsidian или редактора уже открыто, клавиша переключает на него, а не открывает второе.
 - Окна: «выдернуть» окно поверх всех (Super+O), прозрачность (Super+Backspace), убрать зазоры и рамки (Super+Shift+Backspace), раскладка стола dwindle или scrolling (Super+L), закрыть все окна с подтверждением (Ctrl+Alt+Del).
 - Меню питания без пункта сна (Super+Esc): подходит для десктопа на сервере.
