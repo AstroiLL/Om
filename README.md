@@ -1,12 +1,12 @@
 # Om
 
-**Om** — оболочка в духе [Omarchy](https://omarchy.org) для любого дистрибутива Linux: Hyprland, waybar, foot, tmux, единая тема Tokyo Night и встроенная работа с ИИ-агентами. Ставится поверх существующей системы, не заменяя её.
+**Om** — оболочка для любого дистрибутива Linux в духе [Omarchy](https://omarchy.org), дистрибутива от **David Heinemeier Hansson** ([DHH](https://dhh.dk), автор Ruby on Rails). Hyprland, waybar, foot, tmux, единая тема Tokyo Night и встроенная работа с ИИ-агентами. Ставится поверх существующей системы, не заменяя её.
 
 ![Рабочий стол Om: waybar, tmux с git, mc в Tokyo Night и шпаргалка горячих клавиш (Super+K)](docs/img/desktop.png)
 
 *Рабочий стол Om: сверху waybar; слева tmux, справа Midnight Commander в Tokyo Night; поверх — шпаргалка горячих клавиш (Super+K).*
 
-> English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
+> English: Om brings the ideas of [Omarchy](https://github.com/omacom/omarchy), the Linux distribution by David Heinemeier Hansson (DHH), to any Linux distro as a user-level overlay: keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
 
 > [!IMPORTANT]
 > **🤖 For AI agents (Hermes, Claude Code, Codex, OpenCode, …)**
@@ -19,7 +19,7 @@
 
 ## Что это и зачем
 
-Omarchy от DHH — красивый и удобный десктоп, но это отдельный дистрибутив на Arch: ставится с нуля и живёт по своим правилам. Om берёт из него лучшие идеи и переносит их на ту систему, что у вас уже есть:
+Omarchy от DHH (David Heinemeier Hansson) — красивый и удобный десктоп, но это отдельный дистрибутив на Arch: ставится с нуля и живёт по своим правилам. Om берёт из него лучшие идеи и переносит их на ту систему, что у вас уже есть:
 
 - **рядом с другим окружением**: GNOME, KDE или Cinnamon продолжают работать, Hyprland выбирается отдельной сессией на экране входа;
 - **из обычных пакетов дистрибутива**, без своего репозитория;
