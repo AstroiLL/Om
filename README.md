@@ -6,7 +6,7 @@
 
 *Рабочий стол Om: сверху waybar; слева tmux, справа Midnight Commander в Tokyo Night; поверх — шпаргалка горячих клавиш (Super+K).*
 
-> English: Om brings the ideas of [Omarchy](https://github.com/omacom/omarchy), the Linux distribution by David Heinemeier Hansson (DHH), to any Linux distro as a user-level overlay. The core idea taken from Omarchy: the desktop is configured, repaired and extended by AI agents — on top of a keyboard-driven Hyprland desktop with Tokyo Night everywhere. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
+> English: Om brings the ideas of [Omarchy](https://github.com/omacom/omarchy), the Linux distribution by David Heinemeier Hansson (DHH), to any Linux distro as a user-level overlay. The core idea taken from Omarchy: whenever you need it, an AI agent can configure, repair and extend the desktop for you (always-on agents that watch over the system are the goal for future versions) — on top of a keyboard-driven Hyprland desktop with Tokyo Night everywhere. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
 
 > [!IMPORTANT]
 > **🤖 For AI agents (Hermes, Claude Code, Codex, OpenCode, …)**
@@ -19,7 +19,7 @@
 
 ## Что это и зачем
 
-**Главное, чем замечателен Omarchy, — оболочкой управляют ИИ-агенты.** Её можно настраивать, чинить и дополнять новыми функциями, просто попросив агента. Агент знает, как устроена система: где лежат конфиги, как проверить изменение и как откатить его. Красивый и удобный интерфейс — только половина дела. Вторая половина — агент, который помогает работать и с самой оболочкой, и с Linux вообще. Именно это выводит работу на новый уровень, и именно это Om берёт из Omarchy в первую очередь.
+**Главное, чем замечателен Omarchy, — оболочкой можно управлять с помощью ИИ-агентов.** Когда нужно, вы просите агента — и он настраивает, чинит и дополняет оболочку новыми функциями. Агент знает, как устроена система: где лежат конфиги, как проверить изменение и как откатить его. Красивый и удобный интерфейс — только половина дела. Вторая половина — агент, который помогает работать и с самой оболочкой, и с Linux вообще. Именно это выводит работу на новый уровень, и именно это Om берёт из Omarchy в первую очередь.
 
 Что можно поручить агенту (примеры из реальной работы над Om):
 
@@ -28,6 +28,8 @@
 - «Почему выделение мышью съезжает от курсора?» — агент находит причину (смещение аппаратного курсора на nouveau) и исправляет её в `local.lua`.
 - «Почему упал hyprpaper?» — уведомление о падении с кнопкой «Разобрать с Hermes»: агент читает дамп и журнал и ничего не меняет без разрешения.
 - «Что за ошибка на экране?» — Super+Alt+PrtSc распознаёт текст выделенной области и отдаёт его агенту.
+
+**Следующий уровень — к нему мы стремимся.** Сейчас агент подключается, когда его позовут. В будущих версиях Om агенты смогут работать постоянно: следить за системой, замечать проблемы раньше пользователя и сами предлагать исправления и улучшения.
 
 Сам Omarchy — отдельный дистрибутив на Arch: он ставится с нуля и живёт по своим правилам. Om переносит его идеи на ту систему, что у вас уже есть:
 
