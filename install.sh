@@ -196,7 +196,7 @@ install_skills() {
     if [[ -d $HOME/.hermes ]]; then link "$OM/skills/$n" "$HOME/.hermes/skills/om/$n"; fi
     if [[ -d $HOME/.claude ]]; then link "$OM/skills/$n" "$HOME/.claude/skills/$n"; fi
   done
-  [[ -d $HOME/.hermes || -d $HOME/.claude ]] || warn "no ~/.hermes or ~/.claude: point your agent at $OM/skills and $OM/AGENTS.md"
+  [[ -d $HOME/.hermes || -d $HOME/.claude ]] || warn "no ~/.hermes or ~/.claude: point your agent at $OM/skills and $OM/docs/INSTALL-AGENTS.md"
 }
 
 # ---------------------------------------------------------------- coredump

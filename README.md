@@ -2,7 +2,7 @@
 
 **Om** — оболочка в духе [Omarchy](https://omarchy.org) для любого дистрибутива Linux: Hyprland, waybar, foot, tmux, единая тема Tokyo Night и встроенная работа с ИИ-агентами. Ставится поверх существующей системы, не заменяя её.
 
-> English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested. For AI agents: see [AGENTS.md](AGENTS.md).
+> English: Om brings Omarchy's ideas (keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling) to any Linux distro as a user-level overlay. Tested on Debian 13; Arch/Fedora package lists are provided but untested. For AI agents: see [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md).
 
 ## Что это и зачем
 
@@ -29,7 +29,7 @@ Omarchy от DHH — красивый и удобный десктоп, но э�
 **ИИ-агенты**
 - Раскладки tmux для работы с агентами: `tdl hermes` (редактор, агент и shell в одном окне), `tds` (сетка 2×2 с живым git diff), `tdlm` (по окну на каждый подпроект), `tsl 4 hermes` (несколько агентов рядом).
 - **Разбор падений**: если программа упала, приходит уведомление с кнопкой «Разобрать с Hermes». Агент получает данные systemd-coredump и скилл `om-diagnose-crash`.
-- Скиллы `om-hyprland` и `om-diagnose-crash` и [AGENTS.md](AGENTS.md): агент знает, где что лежит и как безопасно менять настройки.
+- Скиллы `om-hyprland` и `om-diagnose-crash` и инструкция [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md): агент знает, где что лежит и как безопасно менять настройки.
 
 **Терминал и shell**
 - foot с темой Tokyo Night и шрифтом Roboto Mono 9. Выделение мышью — ярко-жёлтое с тёмным текстом.
@@ -51,7 +51,7 @@ Omarchy от DHH — красивый и удобный десктоп, но э�
 | Утилиты | Около 470 команд `omarchy-*`, меню через walker | Около 15 скриптов `om-*`, меню и шпаргалка через fuzzel |
 | Терминал и софт | Свой набор программ (Chromium, neovim, btop, lazygit и др.) | Только оболочка; программы на клавишах заменяются в `bindings.lua` |
 | Сон | Есть | Нет: Om рассчитан и на десктоп на сервере |
-| Агенты | Скиллы omarchy и diagnose-crash, внутренние инструменты | Скиллы `om-hyprland` и `om-diagnose-crash` для Hermes и Claude Code, `AGENTS.md`, кнопка разбора падений |
+| Агенты | Скиллы omarchy и diagnose-crash, внутренние инструменты | Скиллы `om-hyprland` и `om-diagnose-crash` для Hermes и Claude Code, инструкция для агентов, кнопка разбора падений |
 | Языки | Английский | Русские подписи клавиш и меню; OCR на русском и английском |
 | Откат | Переустановка или снапшоты | `git revert` и бэкапы заменённых файлов в `~/.local/state/om/backups/` |
 
@@ -131,9 +131,8 @@ configs/systemd-user/ om-crash-watch, swayosd, drop-ins hyprland-only
 scripts/             om-* (см. om-hyprland/SKILL.md)
 skills/              om-hyprland, om-diagnose-crash
 packages/            списки пакетов debian/arch/fedora
-docs/                keybindings.md
+docs/                keybindings.md, INSTALL-AGENTS.md
 install.sh           установщик
-AGENTS.md            инструкция для ИИ-агентов
 ```
 
 ## Удаление
