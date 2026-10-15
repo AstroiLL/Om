@@ -6,7 +6,7 @@
 
 *Рабочий стол Om: сверху waybar; слева tmux, справа Midnight Commander в Tokyo Night; поверх — шпаргалка горячих клавиш (Super+K).*
 
-> English: Om brings the ideas of [Omarchy](https://github.com/omacom/omarchy), the Linux distribution by David Heinemeier Hansson (DHH), to any Linux distro as a user-level overlay: keyboard-driven Hyprland desktop, Tokyo Night everywhere, agent-friendly tooling. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
+> English: Om brings the ideas of [Omarchy](https://github.com/omacom/omarchy), the Linux distribution by David Heinemeier Hansson (DHH), to any Linux distro as a user-level overlay. The core idea taken from Omarchy: the desktop is configured, repaired and extended by AI agents — on top of a keyboard-driven Hyprland desktop with Tokyo Night everywhere. Tested on Debian 13; Arch/Fedora package lists are provided but untested.
 
 > [!IMPORTANT]
 > **🤖 For AI agents (Hermes, Claude Code, Codex, OpenCode, …)**
@@ -19,14 +19,29 @@
 
 ## Что это и зачем
 
-Omarchy от DHH (David Heinemeier Hansson) — красивый и удобный десктоп, но это отдельный дистрибутив на Arch: ставится с нуля и живёт по своим правилам. Om берёт из него лучшие идеи и переносит их на ту систему, что у вас уже есть:
+**Главное, чем замечателен Omarchy, — оболочкой управляют ИИ-агенты.** Её можно настраивать, чинить и дополнять новыми функциями, просто попросив агента. Агент знает, как устроена система: где лежат конфиги, как проверить изменение и как откатить его. Красивый и удобный интерфейс — только половина дела. Вторая половина — агент, который помогает работать и с самой оболочкой, и с Linux вообще. Именно это выводит работу на новый уровень, и именно это Om берёт из Omarchy в первую очередь.
+
+Что можно поручить агенту (примеры из реальной работы над Om):
+
+- «Сделай выделение мышью ярко-жёлтым» — агент меняет цвета в foot, tmux и GTK и проверяет результат по скриншоту.
+- «Повесь текстовый редактор на Super+Shift+E» — новая клавиша с описанием сразу появляется в шпаргалке Super+K.
+- «Почему выделение мышью съезжает от курсора?» — агент находит причину (смещение аппаратного курсора на nouveau) и исправляет её в `local.lua`.
+- «Почему упал hyprpaper?» — уведомление о падении с кнопкой «Разобрать с Hermes»: агент читает дамп и журнал и ничего не меняет без разрешения.
+- «Что за ошибка на экране?» — Super+Alt+PrtSc распознаёт текст выделенной области и отдаёт его агенту.
+
+Сам Omarchy — отдельный дистрибутив на Arch: он ставится с нуля и живёт по своим правилам. Om переносит его идеи на ту систему, что у вас уже есть:
 
 - **рядом с другим окружением**: GNOME, KDE или Cinnamon продолжают работать, Hyprland выбирается отдельной сессией на экране входа;
 - **из обычных пакетов дистрибутива**, без своего репозитория;
-- **конфиги — это симлинки на git-репозиторий**: любое изменение видно в `git diff` и откатывается одной командой;
-- **рассчитано на ИИ-агентов**: в репо есть скиллы и инструкция, с которыми агент (Hermes, Claude Code и др.) может сам ставить, настраивать и чинить оболочку.
+- **конфиги — это симлинки на git-репозиторий**: любое изменение, своё или сделанное агентом, видно в `git diff` и откатывается одной командой;
+- **агенту есть на что опереться**: скиллы `om-hyprland` и `om-diagnose-crash` и [инструкция для агентов](docs/INSTALL-AGENTS.md) — для Hermes, Claude Code и других.
 
 ## Возможности
+
+**ИИ-агенты**
+- Раскладки tmux для работы с агентами: `tdl hermes` (редактор, агент и shell в одном окне), `tds` (сетка 2×2 с живым git diff), `tdlm` (по окну на каждый подпроект), `tsl 4 hermes` (несколько агентов рядом).
+- **Разбор падений**: если программа упала, приходит уведомление с кнопкой «Разобрать с Hermes». Агент получает данные systemd-coredump и скилл `om-diagnose-crash`.
+- Скиллы `om-hyprland` и `om-diagnose-crash` и инструкция [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md): агент знает, где что лежит и как безопасно менять настройки.
 
 **Рабочий стол (Hyprland ≥ 0.55, Lua-конфиг)**
 - Управление с клавиатуры, у каждой горячей клавиши есть описание. **Super+K** открывает шпаргалку по всем клавишам, в терминале то же самое даёт команда `hk`. Полный список: [docs/keybindings.md](docs/keybindings.md).
@@ -38,11 +53,6 @@ Omarchy от DHH (David Heinemeier Hansson) — красивый и удобны
 - Настройки конкретной машины (мониторы, особенности видеокарты, свои клавиши) лежат в `local.lua`. Этот файл не попадает в git.
 
 **Панель waybar**: кнопка меню программ, рабочие столы 1–5, заголовок окна, часы, статус ИИ-агента Hermes, раскладка клавиатуры, звук, CPU, RAM, трей.
-
-**ИИ-агенты**
-- Раскладки tmux для работы с агентами: `tdl hermes` (редактор, агент и shell в одном окне), `tds` (сетка 2×2 с живым git diff), `tdlm` (по окну на каждый подпроект), `tsl 4 hermes` (несколько агентов рядом).
-- **Разбор падений**: если программа упала, приходит уведомление с кнопкой «Разобрать с Hermes». Агент получает данные systemd-coredump и скилл `om-diagnose-crash`.
-- Скиллы `om-hyprland` и `om-diagnose-crash` и инструкция [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md): агент знает, где что лежит и как безопасно менять настройки.
 
 **Терминал и shell**
 - foot с темой Tokyo Night и шрифтом Roboto Mono 9. Выделение мышью — ярко-жёлтое с тёмным текстом.
