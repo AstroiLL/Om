@@ -1,0 +1,14 @@
+[Unit]
+Description=Om: notify about crashed user processes, offer Hermes diagnosis (from Omarchy crash-watch)
+After=graphical-session.target
+PartOf=graphical-session.target
+ConditionEnvironment=XDG_CURRENT_DESKTOP=Hyprland
+
+[Service]
+Type=simple
+ExecStart=%h/.local/share/om/scripts/om-crash-watch
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

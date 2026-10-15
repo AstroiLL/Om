@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adwaita-dark + bright yellow selection (Om). Used by gnome-text-editor. -->
+<style-scheme id="om-tokyo" name="Om Tokyo (yellow selection)" version="1.0" parent-scheme="Adwaita-dark" kind="dark">
+  <author>Om</author>
+  <description>Adwaita-dark with Tokyo Night bright yellow selection</description>
+  <style name="selection" foreground="#1a1b26" background="#ffc777"/>
+  <style name="selection-unfocused" foreground="#1a1b26" background="#e0af68"/>
+</style-scheme>

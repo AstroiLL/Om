@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Open Hermes with the om-diagnose-crash skill for a crashed PID (from the crash notification or by hand).
+# Usage: om-crash-diagnose <pid> [comm] [exe] [signal]     (PIDs: coredumpctl list)
+set -euo pipefail
+pid=${1:?usage: om-crash-diagnose <pid> [comm] [exe] [signal]}
+[[ $pid =~ ^[0-9]+$ ]] || { echo "Not a PID: $pid" >&2; exit 1; }
+comm=${2:-unknown}; exe=${3:-unknown}; sig=${4:-unknown}
+when=$(coredumpctl list "$pid" --no-pager --no-legend 2>/dev/null | tail -1 | awk '{print $1,$2,$3,$4}') || true
+q=$(mktemp "${XDG_RUNTIME_DIR:-/tmp}/om-crash-XXXXXX.txt")
+cat >"$q" <<EOF
+На $(hostname -s) упал процесс, хочу понять почему. Данные systemd-coredump:
+  процесс: $comm
+  PID:     $pid
+  binary:  $exe
+  сигнал:  $sig
+  время:   ${when:-unknown}
+
+Используй скилл om-diagnose-crash: только диагностика, ничего не чини без моего согласия.
+EOF
+exec uwsm app -- foot --app-id=hermes -T "Hermes: crash $comm" bash -c 'hermes chat -s om-diagnose-crash --query-file "$1"; rm -f "$1"' _ "$q"

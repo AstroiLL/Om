@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Pop the active window out: floating, pinned (on every workspace), centered, on top. Again = back to tiling.
+# From omarchy-hyprland-window-pop. Usage: om-window-pop [width height]
+source "$(dirname "$0")/om-env"
+w=${1:-1300}; h=${2:-900}
+active=$(hyprctl activewindow -j)
+addr=$(jq -r '.address // empty' <<<"$active"); [[ -n $addr ]] || exit 0
+win="address:$addr"
+d() { hyprctl dispatch "$1" >/dev/null; }
+if [[ $(jq -r .pinned <<<"$active") == true ]]; then
+  d "hl.dsp.window.pin({ window = \"$win\" })"
+  d "hl.dsp.window.float({ window = \"$win\", action = \"toggle\" })"
+else
+  [[ $(jq -r .floating <<<"$active") == true ]] || d "hl.dsp.window.float({ window = \"$win\", action = \"toggle\" })"
+  d "hl.dsp.window.resize({ window = \"$win\", x = $w, y = $h })"
+  d "hl.dsp.window.center({ window = \"$win\" })"
+  d "hl.dsp.window.pin({ window = \"$win\" })"
+  d "hl.dsp.window.alter_zorder({ window = \"$win\", mode = \"top\" })"
+fi

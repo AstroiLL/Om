@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Select a screen region -> OCR (tesseract rus+eng) -> clipboard. With --hermes also open Hermes with the text.
+# Adapted from omarchy-capture-text.
+source "$(dirname "$0")/om-env"
+region=$(slurp) || exit 0
+text=$(grim -g "$region" - | tesseract - - -l rus+eng --psm 6 2>/dev/null | sed -e 's/[[:space:]]*$//' | sed -e '/./,$!d')
+if [[ -z $text ]]; then notify "OCR: текст не найден"; exit 0; fi
+printf '%s' "$text" | wl-copy
+if [[ ${1:-} == --hermes ]]; then
+  q=$(mktemp "${XDG_RUNTIME_DIR:-/tmp}/om-ocr-XXXXXX.txt")
+  { echo "Текст, распознанный с моего экрана (OCR, возможны ошибки распознавания). Разберись, что это, и помоги:"; echo; echo '```'; printf '%s\n' "$text"; echo '```'; } >"$q"
+  setsid -f uwsm app -- foot --app-id=hermes -T "Hermes: OCR" bash -c 'hermes chat --query-file "$1"; rm -f "$1"' _ "$q" >/dev/null 2>&1
+else
+  notify "Текст в буфере" "$(head -c 200 <<<"$text")"
+fi

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Toggle "no gaps, no borders, no rounding" globally. Persists across reloads via a state file
+# loaded at the end of hyprland.lua. From omarchy-hyprland-toggle window-no-gaps.
+source "$(dirname "$0")/om-env"
+f="$OM_STATE/no-gaps.lua"
+if [[ -f $f ]]; then
+  rm -f "$f"; msg="Зазоры включены"
+else
+  mkdir -p "$OM_STATE"
+  cat >"$f" <<'EOF'
+hl.config({ general = { gaps_in = 0, gaps_out = 0, border_size = 0 }, decoration = { rounding = 0 } })
+EOF
+  msg="Без зазоров"
+fi
+hyprctl reload >/dev/null
+notify "$msg"

@@ -1,0 +1,53 @@
+// Om waybar. Needs a Waybar with Lua-dispatch support for Hyprland >= 0.55 (git >= e17c0d9f, see README)
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 6,
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["custom/hermes", "hyprland/language", "pulseaudio", "cpu", "memory", "tray"],
+
+  "custom/launcher": {
+    "format": "\uf0c9",
+    "tooltip-format": "Программы (Super+Space)",
+    "on-click": "pkill -x fuzzel || fuzzel --launch-prefix='uwsm app -- '"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "persistent-workspaces": { "*": 5 },
+    "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+    "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+  },
+
+  "hyprland/window": { "max-length": 60, "separate-outputs": true },
+
+  "hyprland/language": {
+    "format": "\uf11c {}",
+    "format-en": "EN",
+    "format-ru": "RU",
+    "keyboard-name": "logitech-k360",
+    "on-click": "hyprctl switchxkblayout all next",
+    "tooltip": false
+  },
+
+  "custom/hermes": {
+    "exec": "~/.local/share/om/scripts/om-waybar-hermes",
+    "return-type": "json",
+    "interval": 30,
+    "on-click": "~/.local/share/om/scripts/om-launch-or-focus hermes 'uwsm app -- foot --app-id=hermes -T Hermes hermes'",
+    "on-click-right": "uwsm app -- foot -T hermes-status sh -c 'hermes status; systemctl --user status hermes-gateway --no-pager; read -r _'"
+  },
+
+  "pulseaudio": {
+    "format": "\uf028 {volume}%",
+    "format-muted": "\uf026 mute",
+    "on-click": "uwsm app -- pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+  "cpu":    { "format": "\uf2db {usage}%", "interval": 5 },
+  "memory": { "format": "\uf1c0 {percentage}%", "interval": 10, "tooltip-format": "{used:0.1f} / {total:0.1f} GiB" },
+  "clock":  { "format": "{:L%a %d.%m  %H:%M}", "tooltip-format": "<tt>{calendar}</tt>", "locale": "ru_RU.utf8" },
+  "tray":   { "spacing": 8 }
+}

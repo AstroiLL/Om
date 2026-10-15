@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Toggle transparency of the active window (0.85 <-> 1.0). Runtime only, not saved.
+source "$(dirname "$0")/om-env"
+addr=$(hyprctl activewindow -j | jq -r '.address // empty'); [[ -n $addr ]] || exit 0
+cur=$(hyprctl getprop "address:$addr" opacity 2>/dev/null | head -1)
+if [[ $cur == 1 || $cur == 1.0* || -z $cur ]]; then val=0.85; else val=1; fi
+hyprctl dispatch "hl.dsp.window.set_prop({ window = \"address:$addr\", prop = \"opacity\", value = \"$val\" })" >/dev/null

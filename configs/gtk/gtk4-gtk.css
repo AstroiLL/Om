@@ -1,0 +1,4 @@
+/* ~/.config/gtk-4.0/gtk.css: Tokyonight-Dark theme + Om overrides.
+   Relative URLs resolve from ~/.config/gtk-4.0 (install.sh links selection.css there). */
+@import url("../../.themes/Tokyonight-Dark/gtk-4.0/gtk.css");
+@import url("selection.css");

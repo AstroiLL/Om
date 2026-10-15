@@ -1,0 +1,57 @@
+# Debian 13 (trixie) / Ubuntu — TESTED on Debian 13.
+# Debian 13: hyprland 0.55, uwsm, hypr* tools come from trixie-backports:
+#   echo 'deb http://deb.debian.org/debian trixie-backports main' | sudo tee /etc/apt/sources.list.d/backports.list
+#   sudo apt update && sudo apt install -t trixie-backports hyprland uwsm xdg-desktop-portal-hyprland hyprpaper hypridle hyprlock hyprpolkitagent hyprsunset
+# Roboto Mono is not packaged: install.sh --fonts downloads it.
+
+# Hyprland core (Lua config needs Hyprland >= 0.55)
+hyprland
+uwsm
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+hyprpaper
+hypridle
+hyprlock
+hyprpolkitagent
+hyprsunset
+
+# Bar, launcher, notifications, OSD (Waybar must support Lua dispatch, see README)
+waybar
+fuzzel
+mako-notifier
+swayosd
+libnotify-bin
+playerctl
+
+# Terminal and shell
+foot
+tmux
+mc
+jq
+git
+curl
+python3
+
+# Screenshots, clipboard, OCR
+grim
+slurp
+wl-clipboard
+cliphist
+wtype
+tesseract-ocr
+tesseract-ocr-rus
+tesseract-ocr-eng
+
+# Apps bound to keys (file manager, text editor)
+nemo
+gnome-text-editor
+
+# Fonts and GTK theme build
+fonts-font-awesome
+sassc
+gnome-themes-extra
+
+# Crash diagnosis
+systemd-coredump
+gdb
+elfutils

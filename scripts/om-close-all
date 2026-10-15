@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Close all windows after confirmation, then go to workspace 1. From omarchy-hyprland-window-close-all.
+source "$(dirname "$0")/om-env"
+n=$(hyprctl clients -j | jq '[.[] | select(.workspace.id > 0 or (.workspace.name|startswith("special")))] | length')
+ans=$(printf 'Нет\nДа, закрыть все окна (%s)\n' "$n" | fuzzel --dmenu --prompt 'Закрыть все окна? ' --lines 2)
+[[ $ans == Да* ]] || exit 0
+hyprctl clients -j | jq -r '.[].address' | while read -r a; do
+  hyprctl dispatch "hl.dsp.window.close({ window = \"address:$a\" })" >/dev/null
+done
+hyprctl dispatch 'hl.dsp.focus({ workspace = "1" })' >/dev/null

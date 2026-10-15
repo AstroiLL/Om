@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Super+Escape power menu. No suspend on purpose (desktop on a server must stay up).
+source "$(dirname "$0")/om-env"
+pkill -x fuzzel && exit 0
+choice=$(printf 'Блокировка\nВыйти из Hyprland\nПерезагрузка\nВыключение\n' | fuzzel --dmenu --prompt 'Питание: ' --lines 4) || exit 0
+confirm() { [[ $(printf 'Нет\nДа, %s\n' "$1" | fuzzel --dmenu --prompt "$1? " --lines 2) == Да* ]]; }
+case $choice in
+  Блокировка)          loginctl lock-session ;;
+  "Выйти из Hyprland") confirm "выйти" && uwsm stop ;;
+  Перезагрузка)        confirm "перезагрузить $(hostname -s)" && systemctl reboot ;;
+  Выключение)          confirm "выключить $(hostname -s)" && systemctl poweroff ;;
+esac

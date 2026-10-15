@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Super+K cheatsheet: every bind with a description, in config order (bindings.lua).
+# Workspace binds 1..10 are collapsed into one line. Usage: om-keybinds [--print]
+source "$(dirname "$0")/om-env"
+list=$(hyprctl binds -j | /usr/bin/python3 -c '
+import sys, json, re, unicodedata
+binds = json.load(sys.stdin)
+MODS = [(64, "Super"), (4, "Ctrl"), (8, "Alt"), (1, "Shift")]
+NAMES = {"mouse:272": "ЛКМ", "mouse:273": "ПКМ", "mouse_down": "Колесо↓", "mouse_up": "Колесо↑",
+         "return": "Enter", "escape": "Esc", "backspace": "Backspace", "print": "PrtSc", "space": "Space",
+         "tab": "Tab", "delete": "Del", "left": "←", "right": "→", "up": "↑", "down": "↓"}
+def key(b):
+    k = b["key"]; kl = k.lower()
+    if kl.startswith("xf86"):
+        k = "XF86 " + re.sub(r"(?<!^)([A-Z])", r" \1", k[4:])
+    else:
+        k = NAMES.get(kl, k.upper() if len(k) == 1 else k.capitalize())
+    return " + ".join([n for m, n in MODS if b["modmask"] & m] + [k])
+def width(s):
+    return sum(2 if unicodedata.east_asian_width(c) in "WF" else 1 for c in s)
+seen, out, ws_done = set(), [], set()
+for b in binds:
+    if not b.get("has_description"): continue
+    d = b["description"]
+    if d.endswith("(наверх)"): continue
+    m = re.match(r"^(Стол|Окно на стол) (\d+)( \(остаться\))?$", d)
+    if m:
+        grp = (m.group(1), m.group(3) or "")
+        if grp in ws_done: continue
+        ws_done.add(grp)
+        k = key(b).rsplit(" + ", 1)[0] + " + 1…0"
+        d = m.group(1) + " 1–10" + (m.group(3) or "")
+    else:
+        k = key(b)
+    if (k, d) in seen: continue
+    seen.add((k, d)); out.append((k, d))
+w = max(width(k) for k, _ in out) + 3
+for k, d in out:
+    print(k + " " * (w - width(k)) + d)
+')
+if [[ ${1:-} == --print ]]; then printf '%s\n' "$list"; exit 0; fi
+pkill -x fuzzel && exit 0
+printf '%s\n' "$list" | fuzzel --dmenu --prompt 'Клавиши: ' --width 75 --lines 25 --font 'DejaVu Sans Mono:size=11' >/dev/null

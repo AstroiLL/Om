@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Watch systemd-coredump for crashes of this user's processes; notify with a "Разобрать с Hermes" action.
+# Adapted from omarchy-crash-watch. Mute a program: touch ~/.local/state/om/crash-ignore/<name>
+set -uo pipefail
+readonly MSGID=fc2e22bc6ee647b6b90729ab34a250b1
+readonly DEDUPE=${OM_CRASH_DEDUPE_SECONDS:-60}
+readonly IGNORE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/om/crash-ignore"
+declare -A last
+announce() {  # comm pid exe signal
+  local act
+  act=$(notify-send -a om-crash -u critical -A diagnose="Разобрать с Hermes" -A mute="Не показывать для $1" \
+        "Упал процесс: $1" "PID $2, $4. Нажми, чтобы разобрать." 2>/dev/null) || return 0
+  case $act in
+    diagnose) setsid -f "$HOME/.local/share/om/scripts/om-crash-diagnose" "$2" "$1" "$3" "$4" >/dev/null 2>&1 ;;
+    mute) mkdir -p "$IGNORE_DIR" && touch "$IGNORE_DIR/$1" ;;
+  esac
+}
+journalctl --user -f -n 0 -o json "MESSAGE_ID=$MSGID" 2>/dev/null | while IFS= read -r e; do
+  IFS=$'\t' read -r uid comm pid exe sig < <(jq -r 'def f: if .==null or .=="" then "-" else . end;
+     [(.COREDUMP_UID|f),(.COREDUMP_COMM|f),(.COREDUMP_PID|f),(.COREDUMP_EXE|f),(.COREDUMP_SIGNAL_NAME|f)]|@tsv' <<<"$e" 2>/dev/null)
+  [[ $pid =~ ^[0-9]+$ && $uid == "$UID" ]] || continue
+  name=$comm; [[ $exe == /* ]] && name=${exe##*/}; name=${name##*/}
+  [[ -n $name && $name != - && $name != . && $name != .. ]] || name=unknown
+  [[ $name == om-crash-* || $name == notify-send ]] && continue
+  [[ -e $IGNORE_DIR/$name ]] && continue
+  now=$EPOCHSECONDS; (( now - ${last[$name]:-0} < DEDUPE )) && continue
+  last[$name]=$now
+  announce "$name" "$pid" "$exe" "$sig" &
+done

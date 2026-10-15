@@ -1,0 +1,17 @@
+# Local-only working folders of the maintainer machine (upstream clones, logs, backups, private notes)
+/repos/
+/logs/
+/backups/
+/notes/
+# Machine-specific Hyprland settings (template: configs/hypr/local.lua.example)
+/configs/hypr/local.lua
+# Never commit secrets / editor junk
+*.age
+*.agekey
+*.key
+*.pem
+.env
+*.bak*
+*~
+*.swp
+__pycache__/

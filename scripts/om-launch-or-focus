@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Focus the first window whose class matches <class-regex> (anchored, case-insensitive), else run <launch-cmd>.
+# Adapted from omarchy-launch-or-focus.
+# Usage: om-launch-or-focus <class-regex> <launch-cmd>
+source "$(dirname "$0")/om-env"
+[[ $# -ge 2 ]] || { echo "Usage: $0 <class-regex> <launch-cmd>" >&2; exit 1; }
+addr=$(hyprctl clients -j | jq -r --arg p "^($1)$" '[.[] | select(.class | test($p; "i"))] | sort_by(.focusHistoryID) | .[0].address // empty')
+if [[ -n $addr ]]; then
+  hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
+else
+  setsid -f bash -c "$2" >/dev/null 2>&1
+fi

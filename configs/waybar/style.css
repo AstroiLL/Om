@@ -1,0 +1,23 @@
+/* Tokyo Night (colors from Omarchy themes/tokyo-night/colors.toml) */
+* { font-family: "DejaVu Sans", FontAwesome; font-size: 13px; min-height: 0; }
+window#waybar { background: #1a1b26; color: #a9b1d6; border-bottom: 1px solid #292e42; }
+#custom-launcher { color: #7aa2f7; font-size: 16px; padding: 0 12px; }
+#custom-launcher:hover { background: #292e42; }
+#workspaces button { color: #565f89; padding: 0 9px; border-radius: 0; border: none; background: transparent; }
+#workspaces button.empty { color: #414868; }
+#workspaces button.visible, #workspaces button.active { color: #1a1b26; background: #7aa2f7; }
+#workspaces button.urgent { color: #1a1b26; background: #f7768e; }
+#workspaces button:hover { background: #292e42; color: #c0caf5; box-shadow: none; text-shadow: none; }
+#window { color: #565f89; padding-left: 8px; }
+#clock { color: #c0caf5; font-weight: bold; }
+#language { color: #e0af68; padding: 0 8px; }
+#language:hover { background: #292e42; }
+#custom-hermes { padding: 0 8px; }
+#custom-hermes.active { color: #9ece6a; }
+#custom-hermes.inactive, #custom-hermes.failed { color: #f7768e; }
+#pulseaudio { color: #ad8ee6; }
+#pulseaudio.muted { color: #565f89; }
+#cpu { color: #449dab; }
+#memory { color: #9ece6a; }
+#pulseaudio, #cpu, #memory, #tray { padding: 0 6px; }
+tooltip { background: #24283b; border: 1px solid #414868; color: #c0caf5; }

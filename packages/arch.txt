@@ -1,0 +1,55 @@
+# Arch Linux — package names checked against archlinux.org (Oct 2026), install NOT tested.
+# otf-font-awesome is v7: waybar icons use Font Awesome 4 codepoints, most still exist.
+# Waybar with Lua dispatch: AUR waybar-git if the repo version is older than e17c0d9f.
+
+# Hyprland core (Lua config needs Hyprland >= 0.55)
+hyprland
+uwsm
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+hyprpaper
+hypridle
+hyprlock
+hyprpolkitagent
+hyprsunset
+
+# Bar, launcher, notifications, OSD (Waybar must support Lua dispatch, see README)
+waybar
+fuzzel
+mako
+swayosd
+libnotify
+playerctl
+
+# Terminal and shell
+foot
+tmux
+mc
+jq
+git
+curl
+python
+
+# Screenshots, clipboard, OCR
+grim
+slurp
+wl-clipboard
+cliphist
+wtype
+tesseract
+tesseract-data-rus
+tesseract-data-eng
+
+# Apps bound to keys (file manager, text editor)
+nemo
+gnome-text-editor
+
+# Fonts and GTK theme build
+otf-font-awesome
+ttf-roboto-mono
+sassc
+gnome-themes-extra
+
+# Crash diagnosis
+gdb
+elfutils

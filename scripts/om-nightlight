@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Toggle night light (hyprsunset 4000K <-> off). From omarchy-toggle-nightlight.
+source "$(dirname "$0")/om-env"
+ON=4000; OFF=6500
+systemctl --user is-active -q hyprsunset || { systemctl --user start hyprsunset; sleep 0.5; }
+cur=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+' | head -1)
+if [[ -n $cur && $cur -lt 6000 ]]; then target=$OFF; msg="Ночной свет выключен"; else target=$ON; msg="Ночной свет ${ON}K"; fi
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  hyprctl hyprsunset temperature "$target" >/dev/null 2>&1
+  sleep 0.2
+  [[ $(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+' | head -1) == "$target" ]] && break
+done
+[[ $target == "$OFF" ]] && hyprctl hyprsunset identity >/dev/null 2>&1
+notify "$msg"

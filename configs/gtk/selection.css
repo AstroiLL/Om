@@ -1,0 +1,6 @@
+/* Mouse text selection: bright yellow + dark text (Om, Tokyo Night). */
+selection, selection:focus, selection:backdrop,
+entry selection, text selection, label selection, textview text selection {
+  background-color: #ffc777;
+  color: #1a1b26;
+}

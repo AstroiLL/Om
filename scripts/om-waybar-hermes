@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Waybar module: Hermes gateway status
+st=$(systemctl --user is-active hermes-gateway 2>/dev/null)
+case "$st" in
+  active) txt="\uf0e7 Hermes"; tip="hermes-gateway: active\nЛКМ — чат Hermes, ПКМ — статус" ;;
+  *)      txt="\uf0e7 Hermes!"; tip="hermes-gateway: ${st:-unknown}\nПКМ — статус" ;;
+esac
+printf '{"text":"%b","tooltip":"%s","class":"%s","alt":"%s"}\n' "$txt" "$tip" "${st:-unknown}" "${st:-unknown}"

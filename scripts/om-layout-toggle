@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Toggle the active workspace layout dwindle <-> scrolling; remembered per workspace.
+# From omarchy-hyprland-workspace-layout-toggle.
+source "$(dirname "$0")/om-env"
+ws=$(hyprctl activeworkspace -j)
+id=$(jq -r .id <<<"$ws"); [[ $id =~ ^[0-9]+$ ]] || exit 0
+cur=$(jq -r .tiledLayout <<<"$ws")
+[[ $cur == dwindle ]] && new=scrolling || new=dwindle
+f="$OM_STATE/workspace-layouts.lua"; mkdir -p "$OM_STATE"; touch "$f"
+sed -i "/workspace = \"$id\"/d" "$f"
+[[ $new == scrolling ]] && printf 'hl.workspace_rule({ workspace = "%s", layout = "scrolling" })\n' "$id" >>"$f"
+hyprctl eval "hl.workspace_rule({ workspace = \"$id\", layout = \"$new\" })" >/dev/null
+notify "Стол $id: раскладка $new"

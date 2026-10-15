@@ -1,0 +1,12 @@
+[Unit]
+Description=SwayOSD server (volume OSD)
+After=graphical-session.target
+PartOf=graphical-session.target
+ConditionEnvironment=XDG_CURRENT_DESKTOP=Hyprland
+
+[Service]
+ExecStart=/usr/bin/swayosd-server
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

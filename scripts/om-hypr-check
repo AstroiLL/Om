@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Post-login check for an Om Hyprland session. Run inside the session:
+#   om-hypr-check | tee hypr-check-$(date +%F-%H%M).log
+set -u
+sec(){ printf '\n===== %s =====\n' "$*"; }
+sec session;   echo "XDG_SESSION_TYPE=${XDG_SESSION_TYPE:-} XDG_CURRENT_DESKTOP=${XDG_CURRENT_DESKTOP:-} WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-} AQ_DRM_DEVICES=${AQ_DRM_DEVICES:-}"
+sec version;   hyprctl version | head -3
+sec monitors;  hyprctl monitors | grep -E '^Monitor|[0-9]+x[0-9]+@|scale'
+sec renderer;  hyprctl systeminfo 2>/dev/null | grep -iE 'gpu|renderer|drm|nouveau|ast|llvmpipe' | head -20
+sec units;     systemctl --user --no-pager is-active hyprpaper hypridle hyprpolkitagent xdg-desktop-portal xdg-desktop-portal-hyprland pipewire wireplumber 2>&1 | paste - - - - - - - 
+sec portal;    busctl --user call org.freedesktop.portal.Desktop /org/freedesktop/portal/desktop org.freedesktop.DBus.Properties Get ss org.freedesktop.portal.ScreenCast version 2>&1
+sec procs;     pgrep -a -x -l 'waybar|mako|hyprpaper|hypridle' || true
+sec hermes;    systemctl --user is-active hermes-gateway
+sec errors;    journalctl --user -b --no-pager -p err --since '-15 min' | tail -30

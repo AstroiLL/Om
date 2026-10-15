@@ -1,0 +1,22 @@
+-- local.lua — settings for THIS machine only. Not tracked by git (see .gitignore).
+-- Copy: cp local.lua.example local.lua. Loaded at the end of hyprland.lua, so it overrides everything.
+-- Monitor names/modes: hyprctl monitors all
+
+-- Exact monitor mode
+-- hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@60", position = "0x0", scale = 1 })
+
+-- HiDPI laptop
+-- hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1.5 })
+
+-- nouveau / some VMs: the hardware cursor is drawn offset from the real pointer
+-- (mouse selection lands up-left of the arrow) -> use a software cursor
+-- hl.config({ cursor = { no_hardware_cursors = 1 } })
+
+-- Capable GPU: eye candy
+-- hl.config({ decoration = { blur = { enabled = true }, shadow = { enabled = true } } })
+
+-- Other keyboard layouts
+-- hl.config({ input = { kb_layout = "us,de", kb_options = "grp:alt_shift_toggle" } })
+
+-- Extra binds (description shows in Super+K)
+-- hl.bind("SUPER + SHIFT + M", hl.dsp.exec_cmd("uwsm app -- thunderbird"), { description = "Почта" })

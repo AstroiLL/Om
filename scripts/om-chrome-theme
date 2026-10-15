@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Set Chrome's built-in "color" theme (Customize Chrome -> colour) for ONE profile, offline.
+
+Chrome must be closed: it rewrites Preferences on exit. Other profiles are not touched.
+Usage: om-chrome-theme [--profile Default] [--color '#1a1b26'] [--variant tonal|neutral|vibrant|expressive]
+                         [--scheme dark|light|system] [--show]
+Tokyo Night default: background #1a1b26, dark, tonal spot (Omarchy uses the theme background as the seed).
+"""
+import argparse, json, os, shutil, subprocess, sys, time
+
+VARIANTS = {"system": 0, "tonal": 1, "neutral": 2, "vibrant": 3, "expressive": 4}
+SCHEMES = {"system": 0, "light": 1, "dark": 2}
+
+def argb_int(hexcolor):
+    h = hexcolor.lstrip("#")
+    if len(h) != 6:
+        sys.exit(f"bad colour: {hexcolor}")
+    v = 0xFF000000 | int(h, 16)
+    return v - (1 << 32)  # Chrome stores SkColor as signed int32
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--profile", default="Default")
+    ap.add_argument("--color", default="#1a1b26")
+    ap.add_argument("--variant", default="tonal", choices=VARIANTS)
+    ap.add_argument("--scheme", default="dark", choices=SCHEMES)
+    ap.add_argument("--show", action="store_true", help="print current theme prefs and exit")
+    a = ap.parse_args()
+
+    prefs = os.path.expanduser(f"~/.config/google-chrome/{a.profile}/Preferences")
+    d = json.load(open(prefs))
+    theme = d.setdefault("browser", {}).setdefault("theme", {})
+    if a.show:
+        c = theme.get("user_color2", theme.get("user_color"))
+        print(json.dumps({"browser.theme": theme, "account_values.browser.theme": d.get("account_values", {}).get("browser", {}).get("theme"), "extensions.theme": d.get("extensions", {}).get("theme"),
+                          "user_color_hex": None if c is None else "#%06x" % (c & 0xFFFFFF)}, indent=1))
+        return
+    if subprocess.run(["pgrep", "-x", "chrome"], capture_output=True).returncode == 0:
+        sys.exit("Chrome is running - close it first (it rewrites Preferences on exit).")
+
+    backup = f"{prefs}.bak-{time.strftime('%Y%m%d-%H%M%S')}"
+    shutil.copy2(prefs, backup)
+    col = argb_int(a.color)
+    for k in ("user_color", "user_color2"):
+        theme[k] = col
+    for k in ("color_variant", "color_variant2"):
+        theme[k] = VARIANTS[a.variant]
+    for k in ("color_scheme", "color_scheme2"):
+        theme[k] = SCHEMES[a.scheme]
+    # With Chrome Sync (themes on) the effective values live in account_values/browser/theme and
+    # override the local ones at startup -> set both.
+    acc = d.get("account_values", {}).get("browser", {}).get("theme")
+    if isinstance(acc, dict):
+        acc["user_color"] = col
+        acc["color_variant"] = VARIANTS[a.variant]
+        acc["color_scheme"] = SCHEMES[a.scheme]
+    ext = d.setdefault("extensions", {}).setdefault("theme", {})
+    ext["id"] = "user_color_theme_id"
+    ext["system_theme"] = 0
+    tmp = prefs + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(d, f, separators=(",", ":"))
+    os.replace(tmp, prefs)
+    print(f"{a.profile}: user_color={a.color} variant={a.variant} scheme={a.scheme}; backup {backup}")
+
+if __name__ == "__main__":
+    main()

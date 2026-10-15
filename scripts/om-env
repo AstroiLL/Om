@@ -1,0 +1,8 @@
+# Sourced by om-* scripts: make hyprctl reach the running Hyprland from any shell.
+if [[ -z ${HYPRLAND_INSTANCE_SIGNATURE:-} ]]; then
+  HYPRLAND_INSTANCE_SIGNATURE=$(ls -t "${XDG_RUNTIME_DIR:-/run/user/$UID}/hypr/" 2>/dev/null | head -1)
+  export HYPRLAND_INSTANCE_SIGNATURE
+fi
+: "${WAYLAND_DISPLAY:=wayland-1}"; export WAYLAND_DISPLAY
+OM_STATE="${XDG_STATE_HOME:-$HOME/.local/state}/om/hypr"
+notify() { notify-send -a om -t 2500 "$@"; }
