@@ -9,6 +9,7 @@
 #   ./install.sh --gtk-theme     Tokyonight-Dark GTK theme + icons (git clone, user level)
 #   ./install.sh --skills        agent skills -> ~/.hermes/skills/om and ~/.claude/skills (if present)
 #   ./install.sh --coredump      /etc/systemd/user.conf.d/10-coredump.conf (sudo) for crash diagnosis
+#   ./install.sh --hermes-desktop  Hermes Agent (official installer, if missing) + build Hermes Desktop
 #   ./install.sh --dry-run ...   print what would be done, change nothing
 #
 # Every file that is replaced is moved to ~/.local/state/om/backups/<timestamp>/ first.
@@ -19,7 +20,7 @@ OM=$HOME/.local/share/om
 CFG=${XDG_CONFIG_HOME:-$HOME/.config}
 STATE=${XDG_STATE_HOME:-$HOME/.local/state}/om
 BACKUP=$STATE/backups/$(date +%Y%m%d-%H%M%S)
-DRY=0; DO_PKG=0; DO_FONTS=0; DO_GTK=0; DO_SKILLS=0; DO_CORE=0
+DRY=0; DO_PKG=0; DO_FONTS=0; DO_GTK=0; DO_SKILLS=0; DO_CORE=0; DO_HD=0
 
 for a in "$@"; do
   case $a in
@@ -29,8 +30,9 @@ for a in "$@"; do
     --gtk-theme) DO_GTK=1 ;;
     --skills) DO_SKILLS=1 ;;
     --coredump) DO_CORE=1 ;;
-    --all) DO_PKG=1; DO_FONTS=1; DO_GTK=1; DO_SKILLS=1; DO_CORE=1 ;;
-    -h|--help) sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --hermes-desktop) DO_HD=1 ;;
+    --all) DO_PKG=1; DO_FONTS=1; DO_GTK=1; DO_SKILLS=1; DO_CORE=1; DO_HD=1 ;;
+    -h|--help) sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown option: $a (see --help)" >&2; exit 2 ;;
   esac
 done
@@ -129,6 +131,33 @@ install_gtk_theme() {
     run gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     ok "gsettings org.gnome.desktop.interface: Tokyonight-Dark, prefer-dark"
   fi
+}
+
+# ---------------------------------------------------------------- Hermes Desktop
+install_hermes_desktop() {
+  say "== Hermes Agent + Hermes Desktop"
+  local hermes root
+  hermes=$(command -v hermes || true)
+  [[ -z $hermes && -x $HOME/.local/bin/hermes ]] && hermes=$HOME/.local/bin/hermes
+  if [[ -z $hermes ]]; then
+    warn "Hermes Agent not found: running the official installer (https://hermes-agent.nousresearch.com/docs/getting-started/installation)"
+    if ((DRY)); then echo "  [dry] curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash"
+    else curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash; fi
+    hermes=$(command -v hermes || echo "$HOME/.local/bin/hermes")
+    ((DRY)) || [[ -x $hermes ]] || { warn "hermes still not found after install — open a new shell and re-run with --hermes-desktop"; return; }
+  else
+    ok "Hermes Agent: $("$hermes" --version 2>/dev/null | head -1)"
+  fi
+  root=${HERMES_DESKTOP_HERMES_ROOT:-${HERMES_HOME:-$HOME/.hermes}/hermes-agent}
+  if compgen -G "$root/apps/desktop/release/linux*-unpacked/Hermes" >/dev/null; then
+    ok "Hermes Desktop already built ($root/apps/desktop/release)"
+  else
+    say "  building Hermes Desktop (Electron, needs network; several minutes)..."
+    run "$hermes" desktop --build-only
+  fi
+  [[ -f ${XDG_DATA_HOME:-$HOME/.local/share}/applications/com.nousresearch.hermes.desktop ]] \
+    && ok "menu entry com.nousresearch.hermes.desktop" || ((DRY)) || warn "menu entry not found (hermes desktop creates it on build/launch)"
+  ok "waybar button and Super+Shift+H start it via om-hermes-desktop"
 }
 
 # ---------------------------------------------------------------- configs
@@ -235,6 +264,7 @@ checks() {
 ((DO_PKG))    && install_packages
 ((DO_FONTS))  && install_fonts
 ((DO_GTK))    && install_gtk_theme
+((DO_HD))     && install_hermes_desktop
 link_configs
 link_units
 ((DO_SKILLS)) && install_skills

@@ -34,7 +34,13 @@ git clone https://github.com/AstroiLL/Om.git ~/Om && cd ~/Om
 
 # 5. Optional, sudo: core dumps for crash diagnosis
 ./install.sh --coredump
+
+# 6. Optional: Hermes Agent (official installer, only if `hermes` is missing) + Hermes Desktop build.
+#    Runs a remote install script and an Electron build (network, minutes) — ask the user first.
+./install.sh --hermes-desktop
 ```
+
+Hermes Desktop check: `ls ~/.hermes/hermes-agent/apps/desktop/release/linux*-unpacked/Hermes`, then in the session `om-hermes-desktop` and `hyprctl clients -j | jq -r '.[].class' | grep com.nousresearch.hermes`.
 
 ### Checks after install
 

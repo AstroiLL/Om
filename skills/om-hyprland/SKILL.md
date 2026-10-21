@@ -86,6 +86,7 @@ Rollback = `git checkout -- <file>` / `git revert`.
 | `om-launch-or-focus <class-re> <cmd>` | Super+Shift+B/T/O/E | launch-or-focus |
 | `om-crash-watch` (unit `om-crash-watch.service`) | — | crash-watch: notification → «Разобрать с Hermes» |
 | `om-crash-diagnose <pid>` | — | agent-crash: Hermes + skill `om-diagnose-crash` |
+| `om-hermes-desktop` | Super+Shift+H, waybar button | — (focus or launch Hermes Desktop, class `com.nousresearch.hermes`; not installed → notification) |
 | `om-chrome-theme` | — | Chrome colour theme per profile (Chrome must be closed) |
 | `om-hypr-check` | — | session health report |
 

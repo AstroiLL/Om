@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Hermes Desktop: focus its window if open, otherwise launch it (waybar button, Super+Shift+H).
+# Not installed / not built yet -> notification with the install command.
+source "$(dirname "$(readlink -f "$0")")/om-env"
+APP_CLASS='^com[.]nousresearch[.]hermes$'
+HERMES_ROOT=${HERMES_DESKTOP_HERMES_ROOT:-${HERMES_HOME:-$HOME/.hermes}/hermes-agent}
+
+addr=$(hyprctl clients -j | jq -r --arg p "$APP_CLASS" '[.[] | select(.class | test($p))] | sort_by(.focusHistoryID) | .[0].address // empty')
+if [[ -n $addr ]]; then
+  hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
+  exit 0
+fi
+
+hermes=$(command -v hermes || echo "$HOME/.local/bin/hermes")
+if [[ ! -x $hermes ]]; then
+  notify "Hermes не установлен" "Установка: ./install.sh --hermes-desktop (в папке Om)"
+  exit 1
+fi
+
+if compgen -G "$HERMES_ROOT/apps/desktop/release/linux*-unpacked/Hermes" >/dev/null; then
+  setsid -f uwsm app -- "$hermes" desktop --skip-build >/dev/null 2>&1
+else
+  notify "Hermes Desktop собирается" "Первый запуск: сборка займёт несколько минут"
+  setsid -f uwsm app -- "$hermes" desktop >/dev/null 2>&1
+fi

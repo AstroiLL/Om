@@ -33,6 +33,7 @@ bind(mainMod .. " + SHIFT + T",          "Telegram (перейти или зап
 bind(mainMod .. " + SHIFT + O",          "Obsidian (перейти или запустить)",  focus_or_launch("obsidian", "uwsm app -- obsidian"))
 bind(mainMod .. " + SHIFT + E",          "Текстовый редактор (перейти или запустить)", focus_or_launch("org\\.gnome\\.TextEditor", "uwsm app -- gnome-text-editor"))
 bind(mainMod .. " + SHIFT + CTRL + A",   "Hermes (перейти или запустить)",    focus_or_launch("hermes", "uwsm app -- foot --app-id=hermes -T Hermes hermes"))
+bind(mainMod .. " + SHIFT + H",          "Hermes Desktop (перейти или запустить)", S .. "om-hermes-desktop")
 
 -------------------- Окна --------------------
 bind(mainMod .. " + C",                  "Закрыть окно",                      hl.dsp.window.close())

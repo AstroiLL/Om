@@ -16,6 +16,7 @@ Super + Shift + T           Telegram (перейти или запустить)
 Super + Shift + O           Obsidian (перейти или запустить)
 Super + Shift + E           Текстовый редактор (перейти или запустить)
 Super + Ctrl + Shift + A    Hermes (перейти или запустить)
+Super + Shift + H           Hermes Desktop (перейти или запустить)
 Super + C                   Закрыть окно
 Super + W                   Закрыть окно
 Ctrl + Alt + Del            Закрыть все окна (с подтверждением)

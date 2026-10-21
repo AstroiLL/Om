@@ -44,6 +44,7 @@
 - Раскладки tmux для работы с агентами: `tdl hermes` (редактор, агент и shell в одном окне), `tds` (сетка 2×2 с живым git diff), `tdlm` (по окну на каждый подпроект), `tsl 4 hermes` (несколько агентов рядом).
 - **Разбор падений**: если программа упала, приходит уведомление с кнопкой «Разобрать с Hermes». Агент получает данные systemd-coredump и скилл `om-diagnose-crash`.
 - Скиллы `om-hyprland` и `om-diagnose-crash` и инструкция [docs/INSTALL-AGENTS.md](docs/INSTALL-AGENTS.md): агент знает, где что лежит и как безопасно менять настройки.
+- **[Hermes Desktop](https://hermes-agent.nousresearch.com/desktop)** — графическое приложение агента Hermes: чат, сессии, скиллы, настройки. Кнопка на панели и **Super+Shift+H** открывают его или переключают на уже открытое окно. Терминальный Hermes — соседняя кнопка ⚡ и Super+Shift+Ctrl+A. Установка: `./install.sh --hermes-desktop`.
 
 **Рабочий стол (Hyprland ≥ 0.55, Lua-конфиг)**
 - Управление с клавиатуры, у каждой горячей клавиши есть описание. **Super+K** открывает шпаргалку по всем клавишам, в терминале то же самое даёт команда `hk`. Полный список: [docs/keybindings.md](docs/keybindings.md).
@@ -54,7 +55,7 @@
 - **OCR**: выделяете область экрана — текст (русский и английский) попадает в буфер (Super+Ctrl+PrtSc) или сразу уходит ИИ-агенту (Super+Alt+PrtSc).
 - Настройки конкретной машины (мониторы, особенности видеокарты, свои клавиши) лежат в `local.lua`. Этот файл не попадает в git.
 
-**Панель waybar**: кнопка меню программ, рабочие столы 1–5, заголовок окна, часы, статус ИИ-агента Hermes, раскладка клавиатуры, звук, CPU, RAM, трей.
+**Панель waybar**: кнопка меню программ, рабочие столы 1–5, заголовок окна, часы, кнопка Hermes Desktop, статус ИИ-агента Hermes, раскладка клавиатуры, звук, CPU, RAM, трей.
 
 **Терминал и shell**
 - foot с темой Tokyo Night и шрифтом Roboto Mono 9. Выделение мышью — ярко-жёлтое с тёмным текстом.
@@ -104,7 +105,7 @@
 git clone https://github.com/AstroiLL/Om.git ~/Om
 cd ~/Om
 ./install.sh --dry-run --all   # посмотреть, что будет сделано
-./install.sh --all             # пакеты (sudo), шрифт, GTK-тема, конфиги, скиллы, coredump
+./install.sh --all             # пакеты (sudo), шрифт, GTK-тема, Hermes Desktop, конфиги, скиллы, coredump
 ```
 
 Части по отдельности:
@@ -117,6 +118,7 @@ cd ~/Om
 | `--gtk-theme` | GTK-тема и иконки Tokyonight-Dark, настройки gsettings | нет |
 | `--skills` | Скиллы в `~/.hermes/skills/om/` и `~/.claude/skills/` | нет |
 | `--coredump` | `/etc/systemd/user.conf.d/10-coredump.conf`, чтобы разбор падений получал дампы | да |
+| `--hermes-desktop` | Hermes Agent официальным установщиком (если его нет) и сборка Hermes Desktop (`hermes desktop --build-only`, несколько минут) | только если попросит установщик Hermes |
 | `--dry-run` | Только показать действия | — |
 
 После установки выйдите из системы и на экране входа выберите сессию **Hyprland (uwsm-managed)**. Первым делом нажмите **Super+K**.
@@ -147,6 +149,16 @@ meson setup build --prefix="$HOME/.local/opt/waybar-git" && ninja -C build && me
 ```
 
 Установщик сам найдёт `~/.local/opt/waybar-git/bin/waybar` и подключит его drop-in-файлом к `waybar.service`.
+
+### Hermes Desktop
+
+В Linux Hermes Desktop не распространяется готовым пакетом: ставится Hermes Agent, а приложение (Electron) собирается из его исходников ([документация](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)). `./install.sh --hermes-desktop` делает это сам:
+
+1. если команды `hermes` нет — запускает официальный установщик `curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash`;
+2. собирает приложение: `hermes desktop --build-only` (нужна сеть, Node.js Hermes ставит сам);
+3. ярлык `com.nousresearch.hermes.desktop` в меню программ Hermes создаёт сам.
+
+Запуск: кнопка Hermes Desktop на панели, Super+Shift+H или `om-hermes-desktop`. Обновление вместе с агентом: `hermes update`.
 
 ### Настройки своей машины
 

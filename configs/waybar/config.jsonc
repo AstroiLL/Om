@@ -34,8 +34,8 @@
 
   "custom/hermes-desktop": {
     "format": "\uf108 Hermes",
-    "tooltip-format": "Hermes Desktop — открыть или переключиться",
-    "on-click": "~/.local/share/om/scripts/om-launch-or-focus 'com[.]nousresearch[.]hermes' 'uwsm app -- hermes desktop --skip-build'"
+    "tooltip-format": "Hermes Desktop — открыть или переключиться (Super+Shift+H)",
+    "on-click": "~/.local/share/om/scripts/om-hermes-desktop"
   },
 
   "custom/hermes": {
