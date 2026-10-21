@@ -12,6 +12,8 @@ window#waybar { background: #1a1b26; color: #a9b1d6; border-bottom: 1px solid #2
 #clock { color: #c0caf5; font-weight: bold; }
 #language { color: #e0af68; padding: 0 8px; }
 #language:hover { background: #292e42; }
+#custom-hermes-desktop { color: #7aa2f7; padding: 0 8px; }
+#custom-hermes-desktop:hover { background: #292e42; }
 #custom-hermes { padding: 0 8px; }
 #custom-hermes.active { color: #9ece6a; }
 #custom-hermes.inactive, #custom-hermes.failed { color: #f7768e; }

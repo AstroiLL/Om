@@ -6,7 +6,7 @@
   "spacing": 6,
   "modules-left": ["custom/launcher", "hyprland/workspaces", "hyprland/window"],
   "modules-center": ["clock"],
-  "modules-right": ["custom/hermes", "hyprland/language", "pulseaudio", "cpu", "memory", "tray"],
+  "modules-right": ["custom/hermes-desktop", "custom/hermes", "hyprland/language", "pulseaudio", "cpu", "memory", "tray"],
 
   "custom/launcher": {
     "format": "\uf0c9",
@@ -30,6 +30,12 @@
     "keyboard-name": "logitech-k360",
     "on-click": "hyprctl switchxkblayout all next",
     "tooltip": false
+  },
+
+  "custom/hermes-desktop": {
+    "format": "\uf108 Hermes",
+    "tooltip-format": "Hermes Desktop — открыть или переключиться",
+    "on-click": "~/.local/share/om/scripts/om-launch-or-focus 'com[.]nousresearch[.]hermes' 'uwsm app -- hermes desktop --skip-build'"
   },
 
   "custom/hermes": {
